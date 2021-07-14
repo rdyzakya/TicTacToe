@@ -1,3 +1,5 @@
+import numpy as np
+
 class Board:
 	def __init__(self,turn,ai):
 		self.board = [0 for i in range(9)]
@@ -16,7 +18,7 @@ class Board:
 	def grow(self):
 		return [self.insert(i) for i in range(9) if self.board[i] == 0]
 
-	def minimax(self):
+	def minimax(self,alpha=-np.inf,beta=np.inf):
 		val = self.value()
 		if val == self.maximizer:
 			return 1
@@ -26,9 +28,26 @@ class Board:
 			return 0
 		else:
 			if self.turn == self.maximizer:
-				return max([l.minimax() for l in self.grow()])
+				grow = self.grow()
+				max_eval = -np.inf
+				for l in grow:
+					evaluate = l.minimax(alpha,beta)
+					max_eval = max(max_eval,evaluate)
+					alpha = max(alpha,evaluate)
+					if beta <= alpha:
+						break
+				return max_eval
+
 			else:
-				return min([l.minimax() for l in self.grow()])
+				grow = self.grow()
+				min_eval = np.inf
+				for l in grow:
+					evaluate = l.minimax(alpha,beta)
+					min_eval = min(min_eval,evaluate)
+					beta = min(beta,evaluate)
+					if beta <= alpha:
+						break
+				return min_eval
 
 	def best_step(self):
 		a = [(b.minimax(), b) for b in self.grow()]
