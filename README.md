@@ -8,6 +8,7 @@ Ini adalah permainan TicTacToe dengan antarmuka terminal. Anda sebagai pemain ak
 4. Pergi ke path folder source code
 5. Ketik command berikut:
 
-`python main.py`
+  `python main.py`
+
 6. Kemudian ketik 1 jika ingin melangkah pertama, ketik selain 1 jika ingin melangkah kedua
 7. Masukkan angka yang bersesuaian dengan box pada game yang ingin diisi
