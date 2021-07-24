@@ -1,5 +1,8 @@
 import numpy as np
 
+class InvalidBoxException(Exception):
+	pass
+
 class Board:
 	def __init__(self,turn,ai):
 		self.board = [0 for i in range(9)]
@@ -7,6 +10,12 @@ class Board:
 		self.maximizer = ai
 
 	def insert(self,i):
+		if i < 0 or i > 8:
+			raise InvalidBoxException()
+
+		if self.board[i] != 0:
+			raise InvalidBoxException()
+			
 		b = Board(-1 * self.turn,self.maximizer)
 		b.board = self.board[:]
 		b.board[i] = self.turn
@@ -64,7 +73,7 @@ class Board:
 				elif self.board[idx] == -1:
 					res += 'O'
 				else: #0
-					res += '_'
+					res += str(i*3 + j)
 
 				if j == 2:
 					res += '\n'
@@ -113,7 +122,11 @@ if __name__ == '__main__':
 		if b.turn == ai:
 			b = b.best_step()
 		else:
-			b = b.insert(int(input('which box do you want to fill?')))
+			try:
+				x = b.insert(int(input('which box do you want to fill?')))
+				b = x
+			except:
+				print("Choose the valid box!")
 	print(b)
 	res = b.value()
 	if res == ai:
